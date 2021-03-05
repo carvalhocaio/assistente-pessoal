@@ -41,13 +41,19 @@ def responde(arquivo):
 def cria_audio(mensagem):
     tts = gTTS(mensagem, lang='pt-br')
     tts.save('audios/mensagem.mp3')
+    print(f'Isa: {mensagem}')
     playsound('audios/mensagem.mp3')
     os.remove('audios/mensagem.mp3')
 
 
 def executa_comandos(trigger):
-    if 'noticias' in trigger:
+    if 'notícias' in trigger:
         ultimas_noticias()
+    else:
+        mensagem = trigger.strip(hotword)
+        cria_audio(mensagem)
+        print(f'Comando Inválido! {mensagem}')
+        responde('comando_invalido')
 
 
 def ultimas_noticias():
@@ -55,7 +61,6 @@ def ultimas_noticias():
     noticias = BeautifulSoup(site.text, 'html.parser')
     for item in noticias.findAll('item')[:5]:
         mensagem = item.title.text
-        print(mensagem)
         cria_audio(mensagem)
 
 
@@ -65,4 +70,3 @@ def main():
 
 
 main()
-# ultimas_noticias()

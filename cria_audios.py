@@ -5,11 +5,11 @@ from playsound import playsound # for Windows
 
 def cria_audio(audio):
     tts = gTTS(audio, lang='pt-br')
-    tts.save('audios/feedback.mp3')
+    tts.save('audios/comando_invalido.mp3')
 
-    playsound('audios/feedback.mp3') # for Windows
+    playsound('audios/comando_invalido.mp3') # for Windows
     #call(['afplay', 'audios/hello.mp3']) # for OSX
     #call(['aplay', 'audios/hello.mp3']) # for Linux
 
 
-cria_audio('Um instantinho...')
+cria_audio('Desculpe, mas não posso fazer isso...')
