@@ -64,5 +64,5 @@ def main():
         monitora_audio()
 
 
-# main()
-ultimas_noticias()
+main()
+# ultimas_noticias()
