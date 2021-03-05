@@ -1,9 +1,12 @@
 import speech_recognition as sr
 from playsound import playsound
-from requests import requests
+from requests import get
 from bs4 import BeautifulSoup
+from gtts import gTTS
+import os
 
 hotword = 'isa'
+
 
 def monitora_audio():
     # obtain audio from the microphone
@@ -17,7 +20,7 @@ def monitora_audio():
                 trigger = microphone.recognize_google(audio, language='pt-BR')
                 trigger = trigger.lower()
 
-                if hotword  in trigger:
+                if hotword in trigger:
                     print('Comando: ', trigger)
                     responde('feedback')
                     executa_comandos(trigger)
@@ -35,6 +38,13 @@ def responde(arquivo):
     playsound('audios/' + arquivo + '.mp3')
 
 
+def cria_audio(mensagem):
+    tts = gTTS(mensagem, lang='pt-br')
+    tts.save('audios/mensagem.mp3')
+    playsound('audios/mensagem.mp3')
+    os.remove('audios/mensagem.mp3')
+
+
 def executa_comandos(trigger):
     if 'noticias' in trigger:
         ultimas_noticias()
@@ -46,9 +56,13 @@ def ultimas_noticias():
     for item in noticias.findAll('item')[:5]:
         mensagem = item.title.text
         print(mensagem)
+        cria_audio(mensagem)
 
 
 def main():
-    monitora_audio()
+    while True:
+        monitora_audio()
 
-main()
+
+# main()
+ultimas_noticias()
