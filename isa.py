@@ -75,10 +75,17 @@ def playlist(playlist):
     elif playlist == 'shawn_mendes':
         browser.open('https://open.spotify.com/track/14Zkkd1eYP3pcNPwLAZikf?si=79bf2dcdd47f476c')
 
+import json
+def previsao_tempo():
+    site = get('http://api.openweathermap.org/data/2.5/weather?id=3451190&appid=e1710b0f143492b2f24c88e64fa6fc7c&units=metric&lang=pt')
+    clima = site.json()
+    print(json.dumps(clima, indent=4))
+
 
 def main():
     while True:
         monitora_audio()
 
 
-main()
+# main()
+previsao_tempo()
