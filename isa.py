@@ -1,9 +1,11 @@
+import os
+import webbrowser as browser
 import speech_recognition as sr
-from playsound import playsound
-from requests import get
+
 from bs4 import BeautifulSoup
 from gtts import gTTS
-import os
+from requests import get
+from playsound import playsound
 
 hotword = 'isa'
 
@@ -49,6 +51,10 @@ def cria_audio(mensagem):
 def executa_comandos(trigger):
     if 'notícias' in trigger:
         ultimas_noticias()
+    elif 'play' in trigger and 'panic at the disco' in trigger:
+        playlist('panic_at_the_disco')
+    elif 'play' in trigger and 'shawn mendes' in trigger:
+        playlist('shawn_mendes')
     else:
         mensagem = trigger.strip(hotword)
         cria_audio(mensagem)
@@ -62,6 +68,12 @@ def ultimas_noticias():
     for item in noticias.findAll('item')[:5]:
         mensagem = item.title.text
         cria_audio(mensagem)
+
+def playlist(playlist):
+    if playlist == 'panic_at_the_disco':
+        browser.open('https://open.spotify.com/track/1rqqCSm0Qe4I9rUvWncaom?si=64d43839d3c84081')
+    elif playlist == 'shawn_mendes':
+        browser.open('https://open.spotify.com/track/14Zkkd1eYP3pcNPwLAZikf?si=79bf2dcdd47f476c')
 
 
 def main():
