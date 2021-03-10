@@ -1,3 +1,4 @@
+import json
 import os
 import webbrowser as browser
 import speech_recognition as sr
@@ -55,6 +56,10 @@ def executa_comandos(trigger):
         playlist('panic_at_the_disco')
     elif 'play' in trigger and 'shawn mendes' in trigger:
         playlist('shawn_mendes')
+    elif 'previsão do tempo' in trigger:
+        previsao_tempo(tempo=True)
+    elif 'clima hoje' in trigger:
+        previsao_tempo(minmax=True)
     else:
         mensagem = trigger.strip(hotword)
         cria_audio(mensagem)
@@ -69,17 +74,31 @@ def ultimas_noticias():
         mensagem = item.title.text
         cria_audio(mensagem)
 
+
 def playlist(playlist):
     if playlist == 'panic_at_the_disco':
-        browser.open('https://open.spotify.com/track/1rqqCSm0Qe4I9rUvWncaom?si=64d43839d3c84081')
+        browser.open(
+            'https://open.spotify.com/track/1rqqCSm0Qe4I9rUvWncaom?si=64d43839d3c84081')
     elif playlist == 'shawn_mendes':
-        browser.open('https://open.spotify.com/track/14Zkkd1eYP3pcNPwLAZikf?si=79bf2dcdd47f476c')
+        browser.open(
+            'https://open.spotify.com/track/14Zkkd1eYP3pcNPwLAZikf?si=79bf2dcdd47f476c')
 
-import json
-def previsao_tempo():
+
+def previsao_tempo(tempo=False, minmax=False):
     site = get('http://api.openweathermap.org/data/2.5/weather?id=3451190&appid=e1710b0f143492b2f24c88e64fa6fc7c&units=metric&lang=pt')
     clima = site.json()
-    print(json.dumps(clima, indent=4))
+    temperatura = clima['main']['temp']
+    minima = clima['main']['temp_min']
+    maxima = clima['main']['temp_max']
+    descricao = clima['weather'][0]['description']
+
+    if tempo:
+        mensagem = f'No momento fazem {temperatura:.0f}°C com {descricao}'
+
+    if minmax:
+        mensagem = f'Mínima de {minima:.0f}°C e a máxima de {maxima:.0f}°C'
+
+    cria_audio(mensagem)
 
 
 def main():
@@ -87,5 +106,4 @@ def main():
         monitora_audio()
 
 
-# main()
-previsao_tempo()
+main()
